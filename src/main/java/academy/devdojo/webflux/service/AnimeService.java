@@ -22,4 +22,18 @@ public class AnimeService {
         return animeRepository.findById(id);
     }
 
+    public Mono<Anime> save(Anime anime) {
+        return animeRepository.save(anime);
+    }
+
+    public Mono<Void> update(Anime anime){
+        return findById(anime.getId())
+                .flatMap(animeRepository::save)
+                .then();
+    }
+
+    public Mono<Void> delete(int id) {
+        return findById(id)
+                .flatMap(animeRepository::delete);
+    }
 }
