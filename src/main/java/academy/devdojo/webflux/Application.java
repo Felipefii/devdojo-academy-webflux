@@ -6,9 +6,9 @@ import reactor.blockhound.BlockHound;
 
 @SpringBootApplication
 public class Application {
-	/*static {
+	static {
 		BlockHound.install();
-	}*/
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,8 +33,7 @@ public class AnimeController {
 
     @GetMapping(path = "{id}")
     public Mono<Anime> findById(@PathVariable int id){
-        return animeService.findById(id)
-                .switchIfEmpty(monoResponseStatusNotFoundException());
+        return animeService.findById(id);
     }
 
     @PostMapping
@@ -54,10 +52,6 @@ public class AnimeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> delete(@PathVariable int id){
         return animeService.delete(id);
-    }
-
-    public <T> Mono<T> monoResponseStatusNotFoundException(){
-        return Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));
     }
 
 }
