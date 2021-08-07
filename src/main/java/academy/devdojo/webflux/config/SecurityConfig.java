@@ -1,7 +1,10 @@
 package academy.devdojo.webflux.config;
 
+import academy.devdojo.webflux.service.DevDojoUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
@@ -31,19 +34,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public MapReactiveUserDetailsService userDetailsService(){
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-        UserDetails user = User.withUsername("user")
-                .password((passwordEncoder.encode("devdojo")))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.withUsername("admin")
-                .password((passwordEncoder.encode("devdojo")))
-                .roles("ADMIN")
-                .build();
-
-        return new MapReactiveUserDetailsService(user, admin);
+    public ReactiveAuthenticationManager authenticationManager(DevDojoUserDetailsService devDojoUserDetailsService){
+        return new UserDetailsRepositoryReactiveAuthenticationManager(devDojoUserDetailsService);
     }
 }
